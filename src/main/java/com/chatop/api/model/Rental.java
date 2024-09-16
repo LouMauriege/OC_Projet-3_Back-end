@@ -21,23 +21,15 @@ public class Rental {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String name;
-	
 	private double surface;
-	
 	private double price;
-	
 	private String picture;
-	
 	private String description;
-	
 	@Column(name = "owner_id")
 	private Long ownerId;
-	
 	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
-
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 	
@@ -50,5 +42,4 @@ public class Rental {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
 }

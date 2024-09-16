@@ -21,11 +21,8 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String email;
-	
 	private String name;
-	
 	private String password;
 	
 	@Column(name = "created_at", updatable = false)
@@ -43,5 +40,4 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    
 }
