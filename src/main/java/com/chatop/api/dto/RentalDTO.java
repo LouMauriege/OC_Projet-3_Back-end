@@ -16,7 +16,17 @@ public class RentalDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public RentalDTO(Long id, String name, double surface, double price, String picture, String description, Long ownerId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public RentalDTO(
+            Long id,
+            String name,
+            double surface,
+            double price,
+            String picture,
+            String description,
+            Long ownerId,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
         this.id = id;
         this.name = name;
         this.surface = surface;
