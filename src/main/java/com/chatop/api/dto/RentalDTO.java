@@ -2,6 +2,7 @@ package com.chatop.api.dto;
 
 import lombok.Data;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 @Data
