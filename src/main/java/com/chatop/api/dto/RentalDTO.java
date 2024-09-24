@@ -38,4 +38,32 @@ public class RentalDTO {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public RentalDTO(
+            String name,
+            double surface,
+            double price,
+            String description,
+            Long ownerId
+    ) {
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.description = description;
+        this.ownerId = ownerId;
+    }
+
+    public RentalDTO(
+            String name,
+            double surface,
+            double price,
+            String description
+    ) {
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.description = description;
+    }
+
+    public RentalDTO() {};
 }

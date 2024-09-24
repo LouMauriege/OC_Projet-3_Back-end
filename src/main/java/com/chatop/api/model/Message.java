@@ -3,14 +3,7 @@ package com.chatop.api.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -21,12 +14,14 @@ public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-	
-	@Column(name = "rental_id")
-	public Long rentalId;
-	
-	@Column(name = "user_id")
-	public Long userId;
+
+    @ManyToOne
+	@JoinColumn(name = "rental_id")
+	public Rental rentalId;
+
+    @ManyToOne
+	@JoinColumn(name = "user_id")
+	public User userId;
 	
 	public String message;
 	
@@ -45,6 +40,14 @@ public class Message {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public Long getUserId() {
+        return userId.getId();
+    }
+
+    public Long getRentalId() {
+        return rentalId.getId();
     }
 	
 }

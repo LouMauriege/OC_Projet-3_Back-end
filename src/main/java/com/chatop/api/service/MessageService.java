@@ -17,18 +17,20 @@ import java.util.stream.Collectors;
 @Data
 @Service
 public class MessageService {
-
 	@Autowired
 	private MessageRepository messageRepository;
+
+	@Autowired
+	private MessageMapper messageMapper;
 	
 	public List<MessageDTO> getMessages() {
 		List<Message> messages = messageRepository.findAll();
-		return messages.stream().map(MessageMapper::toDTO).collect(Collectors.toList());
+		return messages.stream().map(messageMapper::toDTO).collect(Collectors.toList());
 	}
 
 	public MessageDTO createMessage(MessageDTO messageDTO) {
-		Message message = MessageMapper.toEntity(messageDTO);
+		Message message = messageMapper.toEntity(messageDTO);
 		Message savedMessage = messageRepository.save(message);
-		return MessageMapper.toDTO(savedMessage);
+		return messageMapper.toDTO(savedMessage);
 	}
 }

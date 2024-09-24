@@ -28,21 +28,24 @@ public class RentalService {
 	
 	@Autowired
 	private RentalRepository rentalRepository;
+
+	@Autowired
+	private RentalMapper rentalMapper;
 	
 	public List<RentalDTO> getRentals() {
-		List<Rental> rentals =  rentalRepository.findAll();
-		return rentals.stream().map(RentalMapper::toDTO).collect(Collectors.toList());
+		List<Rental> rentals = rentalRepository.findAll();
+		return rentals.stream().map(rentalMapper::toDTO).collect(Collectors.toList());
 	}
 	
 	public RentalDTO getRentalById(Long id) {
 		 Optional<Rental> rental = rentalRepository.findById(id);
-		 return rental.map(RentalMapper::toDTO).orElse(null);
+		 return rental.map(rentalMapper::toDTO).orElse(null);
 	}
 
 	public RentalDTO createRental(RentalDTO rentalDTO) {
-		Rental rental = RentalMapper.toEntity(rentalDTO);
+		Rental rental = rentalMapper.toEntity(rentalDTO);
 		Rental savedRental = rentalRepository.save(rental);
-		return RentalMapper.toDTO(savedRental);
+		return rentalMapper.toDTO(savedRental);
 	}
 
 	public RentalDTO updateRental(Long id, RentalDTO rentalDTO) {
@@ -54,9 +57,8 @@ public class RentalService {
 			rental.setPrice(rentalDTO.getPrice());
 			rental.setPicture(rentalDTO.getPicture());
 			rental.setDescription(rentalDTO.getDescription());
-			rental.setOwnerId(rentalDTO.getOwnerId());
 			Rental updatedRental = rentalRepository.save(rental);
-			return RentalMapper.toDTO(rental);
+			return rentalMapper.toDTO(rental);
 		}
 		return null;
 	}

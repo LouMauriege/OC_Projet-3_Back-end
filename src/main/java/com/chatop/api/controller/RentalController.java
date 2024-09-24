@@ -54,16 +54,11 @@ public class RentalController {
 			@RequestParam("description") String description
 	) throws IOException {
 		RentalDTO receivedRental = new RentalDTO(
-				0L,
 				name,
 				surface,
 				price,
-				"",
 				description,
-				0L,
-				LocalDateTime.now(),
-				LocalDateTime.now());
-		// receivedRental.setPicture(fileUrl);
+				0L);
 		RentalDTO createdRental = rentalService.createRental(receivedRental);
 		String fileUrl = rentalService.uploadFile(createdRental, picture);
 		createdRental.setPicture(fileUrl);
@@ -81,15 +76,10 @@ public class RentalController {
 			@RequestParam("description") String description
 	) {
 		RentalDTO receivedRental = new RentalDTO(
-				0L,
 				name,
 				surface,
 				price,
-				"",
-				description,
-				0L,
-				LocalDateTime.now(),
-				LocalDateTime.now());
+				description);
 		RentalDTO updatedRental = rentalService.updateRental(id, receivedRental);
 		if (updatedRental != null) {
 			return "Rental updated !";

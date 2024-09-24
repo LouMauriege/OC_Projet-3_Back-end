@@ -2,9 +2,26 @@ package com.chatop.api.mapper;
 
 import com.chatop.api.dto.MessageDTO;
 import com.chatop.api.model.Message;
+import com.chatop.api.model.Rental;
+import com.chatop.api.model.User;
+import com.chatop.api.service.RentalService;
+import com.chatop.api.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class MessageMapper {
-    public static MessageDTO toDTO(Message message) {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RentalService rentalService;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RentalMapper rentalMapper;
+
+    public MessageDTO toDTO(Message message) {
         return new MessageDTO(
                 message.getId(),
                 message.getRentalId(),
@@ -15,10 +32,12 @@ public class MessageMapper {
         );
     }
 
-    public static Message toEntity(MessageDTO messageDto) {
+    public Message toEntity(MessageDTO messageDto) {
         Message message = new Message();
-        message.setRentalId(messageDto.getRentalId());
-        message.setUserId(messageDto.getUserId());
+        Rental existingRental = rentalMapper.toEntity(rentalService.getRentalById(messageDto.getRentalId()));
+        message.setRentalId(existingRental);
+        User existingUser = userMapper.toEntity(userService.getUserById(messageDto.getUserId()));
+        message.setUserId(existingUser);
         message.setMessage(messageDto.getMessage());
         return message;
     }
