@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.mapper.RentalMapper;
+import com.chatop.api.mapper.UserMapper;
+import com.chatop.api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,12 @@ public class RentalService {
 
 	@Autowired
 	private RentalMapper rentalMapper;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserMapper userMapper;
 	
 	public List<RentalDTO> getRentals() {
 		List<Rental> rentals = rentalRepository.findAll();
@@ -44,6 +52,9 @@ public class RentalService {
 
 	public RentalDTO createRental(RentalDTO rentalDTO) {
 		Rental rental = rentalMapper.toEntity(rentalDTO);
+		User owner = userMapper.toEntity(userService.getUserById(rentalDTO.getOwnerId()));
+		System.out.println(owner);
+		rental.setOwnerId(owner);
 		Rental savedRental = rentalRepository.save(rental);
 		return rentalMapper.toDTO(savedRental);
 	}

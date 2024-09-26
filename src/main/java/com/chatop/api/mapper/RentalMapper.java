@@ -5,7 +5,9 @@ import com.chatop.api.model.Rental;
 import com.chatop.api.model.User;
 import com.chatop.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RentalMapper {
     @Autowired
     private UserService userService;

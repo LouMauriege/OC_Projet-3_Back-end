@@ -2,7 +2,9 @@ package com.chatop.api.mapper;
 
 import com.chatop.api.dto.UserDTO;
 import com.chatop.api.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
     // Convert to DTO
     public UserDTO toDTO(User user) {
@@ -21,7 +23,6 @@ public class UserMapper {
         user.setId(userDTO.getId());
         user.setEmail(userDTO.getEmail());
         user.setName(userDTO.getName());
-        user.setId(userDTO.getId());
         return user;
     }
 }

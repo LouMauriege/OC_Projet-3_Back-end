@@ -23,9 +23,10 @@ public class MessageController {
 	}
 
 	@PostMapping("/messages")
-	public String createMessage (@RequestBody MessageDTO messageDTO) {
+	public MessageDTO createMessage (@RequestBody MessageDTO messageDTO) {
 		MessageDTO createdMessage = messageService.createMessage(messageDTO);
-		return "Message send with success";
+//		return "Message send with success";
+		return createdMessage;
 	}
 
 }

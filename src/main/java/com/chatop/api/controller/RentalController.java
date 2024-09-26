@@ -1,15 +1,13 @@
 package com.chatop.api.controller;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import com.chatop.api.dto.RentalDTO;
+import com.chatop.api.mapper.RentalMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +26,9 @@ public class RentalController {
 
 	@Autowired
 	private RentalService rentalService;
+
+	@Autowired
+	private RentalMapper rentalMapper;
 
 	@GetMapping()
 	public ResponseEntity<List<RentalDTO>> getRentals() {
@@ -58,12 +59,11 @@ public class RentalController {
 				surface,
 				price,
 				description,
-				0L);
+				1L);
 		RentalDTO createdRental = rentalService.createRental(receivedRental);
 		String fileUrl = rentalService.uploadFile(createdRental, picture);
 		createdRental.setPicture(fileUrl);
 		RentalDTO updatedRental = rentalService.updateRental(createdRental.getId(), createdRental);
-		System.out.println(updatedRental);
 		return updatedRental;
 	}
 

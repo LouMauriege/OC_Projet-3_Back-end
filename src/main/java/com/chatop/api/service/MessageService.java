@@ -2,7 +2,6 @@ package com.chatop.api.service;
 
 import com.chatop.api.dto.MessageDTO;
 import com.chatop.api.mapper.MessageMapper;
-import com.chatop.api.mapper.RentalMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
