@@ -58,7 +58,7 @@ public class RentalController {
 				name,
 				surface,
 				price,
-				description,
+				description, 
 				1L);
 		RentalDTO createdRental = rentalService.createRental(receivedRental);
 		String fileUrl = rentalService.uploadFile(createdRental, picture);
