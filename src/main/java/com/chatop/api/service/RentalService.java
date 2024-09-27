@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.chatop.api.dto.FormCreateRentalDTO;
 import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.mapper.RentalMapper;
 import com.chatop.api.mapper.UserMapper;
@@ -50,10 +51,16 @@ public class RentalService {
 		 return rental.map(rentalMapper::toDTO).orElse(null);
 	}
 
-	public RentalDTO createRental(RentalDTO rentalDTO) {
-		Rental rental = rentalMapper.toEntity(rentalDTO);
-		User owner = userMapper.toEntity(userService.getUserById(rentalDTO.getOwnerId()));
+	public RentalDTO createRental(FormCreateRentalDTO formCreateRentalDTO) throws Exception {
+		formCreateRentalDTO.setOwnerId(1L);
+		User owner = userMapper.toEntity(userService.getUserById(formCreateRentalDTO.getOwnerId()));
 		System.out.println(owner);
+		Rental rental = new Rental();
+		rental.setName(formCreateRentalDTO.getName());
+		rental.setSurface(formCreateRentalDTO.getSurface());
+		rental.setPrice(formCreateRentalDTO.getPrice());
+		rental.setPicture(uploadFile(rental.getId(), formCreateRentalDTO.getPicture()));
+		rental.setDescription(formCreateRentalDTO.getDescription());
 		rental.setOwnerId(owner);
 		Rental savedRental = rentalRepository.save(rental);
 		return rentalMapper.toDTO(savedRental);
@@ -74,12 +81,10 @@ public class RentalService {
 		return null;
 	}
 
-	public String uploadFile(RentalDTO rentalDTO, MultipartFile picture) throws IOException {
-		String rentalId = rentalDTO.getId().toString();
+	public String uploadFile(Long rentalId, MultipartFile picture) throws IOException {
 		String fileName = picture.getOriginalFilename();
-		String fileExtension;
 		if (fileName != null && fileName.contains(".")) {
-			fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+			String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
 			Path filePath = Paths.get(uploadFolder + "/" + rentalId + "." + fileExtension);
 			Files.write(filePath, picture.getBytes());
 			return filePath.toString().replace("\\", "/");

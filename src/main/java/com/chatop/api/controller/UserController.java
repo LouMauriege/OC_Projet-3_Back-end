@@ -16,7 +16,7 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("user/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
         UserDTO userDto = userService.getUserById(id);
         if (userDto != null ) {
             return ResponseEntity.ok(userDto);

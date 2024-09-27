@@ -34,7 +34,7 @@ public class MessageMapper {
         );
     }
 
-    public Message toEntity(MessageDTO messageDto) {
+    public Message toEntity(MessageDTO messageDto) throws Exception {
         Message message = new Message();
         Rental existingRental = rentalMapper.toEntity(rentalService.getRentalById(messageDto.getRentalId()));
         message.setRentalId(existingRental);

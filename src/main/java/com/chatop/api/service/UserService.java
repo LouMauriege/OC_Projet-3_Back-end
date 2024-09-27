@@ -21,9 +21,14 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public UserDTO getUserById(Long id) {
+	public UserDTO getUserById(Long id) throws Exception {
 		Optional<User> user = userRepository.findById(id);
-		return user.map(userMapper::toDTO).orElse(null);
+//		return user.map(userMapper::toDTO).orElse(null);
+		if(user.isPresent()) {
+			return userMapper.toDTO(user.get());
+		} else {
+			throw new Exception("No user correspond to this id");
+		}
 	}
 
 }

@@ -23,13 +23,13 @@ public class RentalMapper {
                 rental.getPrice(),
                 rental.getPicture(),
                 rental.getDescription(),
-                rental.getOwnerId(),
+                rental.getOwnerEntityId(),
                 rental.getCreatedAt(),
                 rental.getUpdatedAt()
         );
     }
 
-    public Rental toEntity(RentalDTO rentalDTO) {
+    public Rental toEntity(RentalDTO rentalDTO) throws Exception {
         Rental rental = new Rental();
         rental.setName(rentalDTO.getName());
         rental.setSurface(rentalDTO.getSurface());

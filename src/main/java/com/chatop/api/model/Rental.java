@@ -1,7 +1,6 @@
 package com.chatop.api.model;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import jakarta.persistence.*;
 
@@ -47,7 +46,7 @@ public class Rental {
         updatedAt = LocalDateTime.now();
     }
 
-	public Long getOwnerId() {
+	public Long getOwnerEntityId() {
 		return ownerId.getId();
 	}
 }

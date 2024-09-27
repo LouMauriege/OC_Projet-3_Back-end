@@ -27,7 +27,7 @@ public class MessageService {
 		return messages.stream().map(messageMapper::toDTO).collect(Collectors.toList());
 	}
 
-	public MessageDTO createMessage(MessageDTO messageDTO) {
+	public MessageDTO createMessage(MessageDTO messageDTO) throws Exception {
 		Message message = messageMapper.toEntity(messageDTO);
 		Message savedMessage = messageRepository.save(message);
 		return messageMapper.toDTO(savedMessage);
