@@ -22,13 +22,6 @@ import com.chatop.api.service.RentalService;
 @RequestMapping("/rentals")
 public class RentalController {
 
-	// Ignore picture field while mapping formdata to RentalDTO
-//	@InitBinder
-//	public void initBinder(WebDataBinder binder) {
-//		binder.setDisallowedFields("picture");
-//		System.out.println("Disallowed fields: " + Arrays.toString(binder.getDisallowedFields()));
-//	}
-
 	@Autowired
 	private RentalService rentalService;
 
