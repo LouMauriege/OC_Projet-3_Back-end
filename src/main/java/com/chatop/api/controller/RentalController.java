@@ -1,20 +1,14 @@
 package com.chatop.api.controller;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import com.chatop.api.dto.FormCreateRentalDTO;
 import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.mapper.RentalMapper;
-import com.chatop.api.model.Rental;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.chatop.api.service.RentalService;
 
@@ -46,23 +40,8 @@ public class RentalController {
 
 	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public RentalDTO createRental (
-//			@RequestParam("name") String name,
-//			@RequestParam("surface") double surface,
-//			@RequestParam("price") double price,
 			@ModelAttribute FormCreateRentalDTO receivedRental
-//			@RequestPart("picture") MultipartFile picture
-//			@RequestParam("description") String description
 	) throws Exception {
-//		RentalDTO receivedRental = new RentalDTO(
-//				name,
-//				surface,
-//				price,
-//				description,
-//				1L);
-//		RentalDTO createdRental = rentalService.createRental(receivedRental);
-//		String fileUrl = rentalService.uploadFile(createdRental, picture);
-//		createdRental.setPicture(fileUrl);
-//		RentalDTO updatedRental = rentalService.updateRental(createdRental.getId(), createdRental);
 		RentalDTO createdRental = rentalService.createRental(receivedRental);
 		return createdRental;
 	}
