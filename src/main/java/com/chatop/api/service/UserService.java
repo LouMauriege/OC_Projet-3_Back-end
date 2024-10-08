@@ -31,4 +31,11 @@ public class UserService {
 		}
 	}
 
+	public UserDTO createUser(UserDTO userDTO) {
+		User user = new User();
+		user.setEmail(userDTO.getEmail());
+		user.setName(userDTO.getName());
+		user.setPassword();
+	}
+
 }

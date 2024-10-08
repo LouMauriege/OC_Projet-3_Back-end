@@ -1,21 +1,21 @@
 package com.chatop.api.controller;
 
 import com.chatop.api.dto.UserDTO;
+import com.chatop.api.model.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.chatop.api.service.UserService;
 
+@RequestMapping("/user")
 @RestController
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@GetMapping("user/{id}")
+
+	@GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
         UserDTO userDto = userService.getUserById(id);
         if (userDto != null ) {
@@ -23,6 +23,12 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/login")
+    public String getToken(@ModelAttribute UserCredentials) {
+        String outPut =
+        return "Ok !";
     }
 	
 }
