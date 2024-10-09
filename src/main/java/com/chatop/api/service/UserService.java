@@ -35,7 +35,9 @@ public class UserService {
 		User user = new User();
 		user.setEmail(userDTO.getEmail());
 		user.setName(userDTO.getName());
-		user.setPassword();
+		user.setPassword("pass");
+		User createdUser = userRepository.save(user);
+		return userMapper.toDTO(createdUser);
 	}
 
 }

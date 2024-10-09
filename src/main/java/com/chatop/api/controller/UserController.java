@@ -1,7 +1,7 @@
 package com.chatop.api.controller;
 
 import com.chatop.api.dto.UserDTO;
-import com.chatop.api.model.UserCredentials;
+import com.chatop.api.dto.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String getToken(@ModelAttribute UserCredentials) {
-        String outPut =
+    public String getToken(@ModelAttribute UserCredentials userCredentials) {
+        String outPut = "d";
         return "Ok !";
     }
 	
