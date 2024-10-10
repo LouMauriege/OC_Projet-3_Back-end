@@ -5,17 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chatop.api.service.UserService;
 
 @RestController
+@RequestMapping("/auth")
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@GetMapping("user/{id}")
+
+	@GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
         UserDTO userDto = userService.getUserById(id);
         if (userDto != null ) {

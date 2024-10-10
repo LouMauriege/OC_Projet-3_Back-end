@@ -9,6 +9,7 @@ public class UserDTO {
     private Long id;
     private String email;
     private String name;
+    private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -19,4 +20,6 @@ public class UserDTO {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public UserDTO() {};
 }
