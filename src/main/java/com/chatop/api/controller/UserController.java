@@ -1,17 +1,22 @@
 package com.chatop.api.controller;
 
 import com.chatop.api.dto.UserDTO;
+import com.chatop.api.model.UserLogin;
+import com.chatop.api.model.LoginResponse;
+import com.chatop.api.security.JwtIssuer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.chatop.api.service.UserService;
 
 @RestController
+@RequestMapping("/auth")
+@RequiredArgsConstructor // To avoid using constructor to initialize method
 public class UserController {
-	
+    private final JwtIssuer jwtIssuer;
+
 	@Autowired
 	private UserService userService;
 	
@@ -24,5 +29,18 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-	
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody UserLogin userLogin) {
+        var token = jwtIssuer.issue(1L, userLogin.getName());
+        return LoginResponse.builder()
+                .JWT(token)
+                .build();
+    }
+
+    @GetMapping("secured")
+    public String secured() {
+        return "secured content";
+    }
+
 }
