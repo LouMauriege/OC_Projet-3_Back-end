@@ -31,4 +31,14 @@ public class UserService {
 		}
 	}
 
+	public Optional<UserDTO> findByName(String name) {
+		Optional<User> user = userRepository.findByName(name);
+		if (user.isEmpty()) {
+			return Optional.empty();
+		} else {
+			User userFounded = user.get();
+			return Optional.of(userMapper.toDTO(userFounded));
+		}
+	}
+
 }

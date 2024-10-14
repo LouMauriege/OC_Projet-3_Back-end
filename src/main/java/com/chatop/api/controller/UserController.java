@@ -4,9 +4,15 @@ import com.chatop.api.dto.UserDTO;
 import com.chatop.api.model.UserLogin;
 import com.chatop.api.model.LoginResponse;
 import com.chatop.api.security.JwtIssuer;
+import com.chatop.api.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.chatop.api.service.UserService;
@@ -19,7 +25,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
+    private final AuthenticationManager authenticationManager;
+
 	@GetMapping("user/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
         UserDTO userDto = userService.getUserById(id);
@@ -32,15 +40,22 @@ public class UserController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody UserLogin userLogin) {
-        var token = jwtIssuer.issue(1L, userLogin.getName());
+        var authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userLogin.getName(), userLogin.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        var principal = (UserPrincipal) authentication.getPrincipal();
+        System.out.println(principal);
+
+        var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), principal.getName(), principal.getCreatedAt(), principal.getUpdatedAt());
         return LoginResponse.builder()
                 .JWT(token)
                 .build();
     }
 
     @GetMapping("secured")
-    public String secured() {
-        return "secured content";
+    public String secured(@AuthenticationPrincipal UserPrincipal principal) {
+        return "secured content user :" + principal.getName();
     }
 
 }

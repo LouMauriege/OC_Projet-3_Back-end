@@ -9,13 +9,15 @@ public class UserDTO {
     private Long id;
     private String email;
     private String name;
+    private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public UserDTO(Long id, String email, String name, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserDTO(Long id, String email, String name, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.password = password;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
