@@ -1,12 +1,15 @@
 package com.chatop.api.controller;
 
 import com.chatop.api.dto.UserDTO;
+import com.chatop.api.model.User;
 import com.chatop.api.model.UserLogin;
 import com.chatop.api.model.LoginResponse;
+import com.chatop.api.model.UserRegister;
 import com.chatop.api.security.JwtIssuer;
 import com.chatop.api.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,34 +31,48 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
 
-	@GetMapping("user/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) throws Exception {
-        UserDTO userDto = userService.getUserById(id);
-        if (userDto != null ) {
-            return ResponseEntity.ok(userDto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+	@GetMapping("/me")
+    public UserDTO getUserById(@AuthenticationPrincipal UserPrincipal principal) throws Exception {
+        return userService.getUserById(principal.getUserId());
     }
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody UserLogin userLogin) {
         var authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userLogin.getName(), userLogin.getPassword())
+                new UsernamePasswordAuthenticationToken(userLogin.getLogin(), userLogin.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         var principal = (UserPrincipal) authentication.getPrincipal();
-        System.out.println(principal);
-
         var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), principal.getName(), principal.getCreatedAt(), principal.getUpdatedAt());
         return LoginResponse.builder()
                 .JWT(token)
                 .build();
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<LoginResponse> register(@RequestBody UserRegister userRegister) {
+        if (userService.isEmailAvailable(userRegister.getEmail())) {
+            UserDTO userCreated = userService.createUser(userRegister);
+            var authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userRegister.getEmail(), userRegister.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            var principal = (UserPrincipal) authentication.getPrincipal();
+            System.out.println(principal);
+
+            var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), principal.getName(), principal.getCreatedAt(), principal.getUpdatedAt());
+            LoginResponse jwt = LoginResponse.builder()
+                    .JWT(token)
+                    .build();
+            return ResponseEntity.ok(jwt);
+        }
+        System.out.println("deja pris");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
     @GetMapping("secured")
     public String secured(@AuthenticationPrincipal UserPrincipal principal) {
-        return "secured content user :" + principal.getName();
+        return "secured content username :" + principal.getUsername();
     }
 
 }

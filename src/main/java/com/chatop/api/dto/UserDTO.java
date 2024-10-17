@@ -1,5 +1,6 @@
 package com.chatop.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ public class UserDTO {
     private Long id;
     private String email;
     private String name;
+    @JsonIgnore
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

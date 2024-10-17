@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserService userService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userService.findByName(username).orElseThrow();
+        var user = userService.findByMail(username).orElseThrow();
         System.out.println("in loaduser customserice" + user);
         return UserPrincipal.builder()
                 .userId(user.getId())
