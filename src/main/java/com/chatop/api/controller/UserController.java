@@ -1,7 +1,6 @@
 package com.chatop.api.controller;
 
 import com.chatop.api.dto.UserDTO;
-import com.chatop.api.model.User;
 import com.chatop.api.model.UserLogin;
 import com.chatop.api.model.LoginResponse;
 import com.chatop.api.model.UserRegister;
@@ -13,12 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.chatop.api.service.UserService;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -32,7 +31,7 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
 
 	@GetMapping("/me")
-    public UserDTO getUserById(@AuthenticationPrincipal UserPrincipal principal) throws Exception {
+    public UserDTO getUserById(@AuthenticationPrincipal UserPrincipal principal) {
         return userService.getUserById(principal.getUserId());
     }
 
@@ -70,7 +69,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("secured")
+    @GetMapping("/secured")
     public String secured(@AuthenticationPrincipal UserPrincipal principal) {
         return "secured content username :" + principal.getUsername();
     }

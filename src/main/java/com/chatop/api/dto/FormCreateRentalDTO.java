@@ -10,5 +10,4 @@ public class FormCreateRentalDTO {
     private double price;
     private MultipartFile picture;
     private String description;
-    private Long ownerId;
 }

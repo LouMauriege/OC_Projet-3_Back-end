@@ -1,14 +1,12 @@
 package com.chatop.api.security;
 
-import ch.qos.logback.core.util.StringUtil;
+import com.chatop.api.exception.TokenNotFound;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -33,11 +31,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+//    private String extractTokenFromRequest(HttpServletRequest request) {
+//        var token = request.getHeader("Authorization");
+//        if (StringUtils.hasText(token) && token.startsWith(("Bearer "))) {
+//            return token.substring(7);
+//        } else {
+//            throw new TokenNotFound("Token non trouvé !");
+//        }
+//    }
+
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
         var token = request.getHeader("Authorization");
         if (StringUtils.hasText(token) && token.startsWith(("Bearer "))) {
            return Optional.of(token.substring(7));
         }
+//        return throw new TokenNotFound("Token non trouvé");
         return Optional.empty();
     }
 }

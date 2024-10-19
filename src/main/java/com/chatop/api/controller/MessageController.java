@@ -1,7 +1,6 @@
 package com.chatop.api.controller;
 
 import com.chatop.api.dto.MessageDTO;
-import com.chatop.api.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +22,11 @@ public class MessageController {
 	}
 
 	@PostMapping("/messages")
-	public MessageDTO createMessage (@RequestBody MessageDTO messageDTO) throws Exception {
+	public ResponseEntity<MessageDTO> createMessage (@RequestBody MessageDTO messageDTO) {
+		System.out.println(messageDTO);
 		MessageDTO createdMessage = messageService.createMessage(messageDTO);
+		return ResponseEntity.ok(createdMessage);
 //		return "Message send with success";
-		return createdMessage;
 	}
 
 }

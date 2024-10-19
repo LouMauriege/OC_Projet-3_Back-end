@@ -1,6 +1,7 @@
 package com.chatop.api.service;
 
 import com.chatop.api.dto.UserDTO;
+import com.chatop.api.exception.UserNotFound;
 import com.chatop.api.mapper.UserMapper;
 import com.chatop.api.model.UserRegister;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,38 +29,18 @@ public class UserService {
 		return new BCryptPasswordEncoder();
 	}
 
-	public UserDTO getUserById(Long id) throws Exception {
-		Optional<User> user = userRepository.findById(id);
-		if(user.isPresent()) {
-			return userMapper.toDTO(user.get());
-		} else {
-			throw new Exception("No user correspond to this id");
-		}
+	public UserDTO getUserById(Long id) {
+		return userMapper.toDTO(userRepository.findById(id).orElseThrow(
+				() -> new UserNotFound("Utilisateur non trouvé !")));
 	}
 
-	public Optional<UserDTO> findByName(String name) {
-		Optional<User> user = userRepository.findByName(name);
-		if (user.isEmpty()) {
-			return Optional.empty();
-		} else {
-			User userFound = user.get();
-			return Optional.of(userMapper.toDTO(userFound));
-		}
-	}
-
-	public Optional<UserDTO> findByMail(String email) {
-		Optional<User> user = userRepository.findByEmail(email);
-		if (user.isEmpty()) {
-			return Optional.empty();
-		} else {
-			User userFound = user.get();
-			return Optional.of(userMapper.toDTO(userFound));
-		}
+	public UserDTO findByMail(String email) {
+		return userMapper.toDTO(userRepository.findByEmail(email).orElseThrow(
+				() -> new UserNotFound("Utilisateur non trouvé !")));
 	}
 
 	public boolean isEmailAvailable(String email) {
-		Optional<UserDTO> userFind = findByMail(email);
-        return userFind.isEmpty();
+        return findByMail(email) == null;
 	}
 
 	public UserDTO createUser(UserRegister userRegister) {

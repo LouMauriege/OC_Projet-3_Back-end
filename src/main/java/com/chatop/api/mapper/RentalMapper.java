@@ -1,11 +1,16 @@
 package com.chatop.api.mapper;
 
 import com.chatop.api.dto.RentalDTO;
+import com.chatop.api.dto.UserDTO;
+import com.chatop.api.exception.UserNotFound;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.User;
+import com.chatop.api.repository.UserRepository;
 import com.chatop.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class RentalMapper {
@@ -13,7 +18,7 @@ public class RentalMapper {
     private UserService userService;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserRepository userRepository;
 
     public RentalDTO toDTO(Rental rental) {
         return new RentalDTO(
@@ -29,15 +34,15 @@ public class RentalMapper {
         );
     }
 
-    public Rental toEntity(RentalDTO rentalDTO) throws Exception {
+    public Rental toEntity(RentalDTO rentalDTO) {
+        User ownerId = userRepository.findById(rentalDTO.getId()).orElseThrow(() -> new UserNotFound("Utilisateur non trouvé !"));
         Rental rental = new Rental();
+        rental.setOwnerId(ownerId);
         rental.setName(rentalDTO.getName());
         rental.setSurface(rentalDTO.getSurface());
         rental.setPrice(rentalDTO.getPrice());
         rental.setPicture(rentalDTO.getPicture());
         rental.setDescription(rentalDTO.getDescription());
-        User existingUser = userMapper.toEntity(userService.getUserById(rentalDTO.getOwnerId()));
-        rental.setOwnerId(existingUser);
         return rental;
     }
 }

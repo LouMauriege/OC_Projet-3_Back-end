@@ -1,13 +1,21 @@
 package com.chatop.api.mapper;
 
 import com.chatop.api.dto.MessageDTO;
+import com.chatop.api.dto.RentalDTO;
+import com.chatop.api.dto.UserDTO;
+import com.chatop.api.exception.RentalNotFound;
+import com.chatop.api.exception.UserNotFound;
 import com.chatop.api.model.Message;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.User;
+import com.chatop.api.repository.RentalRepository;
+import com.chatop.api.repository.UserRepository;
 import com.chatop.api.service.RentalService;
 import com.chatop.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class MessageMapper {
@@ -15,7 +23,10 @@ public class MessageMapper {
     private UserService userService;
 
     @Autowired
-    private RentalService rentalService;
+    private RentalRepository rentalRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -34,12 +45,14 @@ public class MessageMapper {
         );
     }
 
-    public Message toEntity(MessageDTO messageDto) throws Exception {
+    public Message toEntity(MessageDTO messageDto) {
+        Rental rentalFind = rentalRepository.findById(messageDto.getRentalId()).orElseThrow(
+                () -> new RentalNotFound("Rental non trouvé !"));
+        User userFind = userRepository.findById(messageDto.getUserId()).orElseThrow(
+                () -> new UserNotFound("Utilisateur non trouvé !"));
         Message message = new Message();
-        Rental existingRental = rentalMapper.toEntity(rentalService.getRentalById(messageDto.getRentalId()));
-        message.setRentalId(existingRental);
-        User existingUser = userMapper.toEntity(userService.getUserById(messageDto.getUserId()));
-        message.setUserId(existingUser);
+        message.setRentalId(rentalFind);
+        message.setUserId(userFind);
         message.setMessage(messageDto.getMessage());
         return message;
     }
