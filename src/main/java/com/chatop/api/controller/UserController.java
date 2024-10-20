@@ -50,6 +50,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> register(@RequestBody UserRegister userRegister) {
+        System.out.println(userRegister);
         if (userService.isEmailAvailable(userRegister.getEmail())) {
             UserDTO userCreated = userService.createUser(userRegister);
             var authentication = authenticationManager.authenticate(
@@ -68,10 +69,4 @@ public class UserController {
         System.out.println("deja pris");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
-    @GetMapping("/secured")
-    public String secured(@AuthenticationPrincipal UserPrincipal principal) {
-        return "secured content username :" + principal.getUsername();
-    }
-
 }
