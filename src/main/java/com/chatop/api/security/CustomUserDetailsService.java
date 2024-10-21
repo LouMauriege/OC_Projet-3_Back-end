@@ -6,16 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserService userService;
     @Override
     public UserDetails loadUserByUsername(String username) {
-        var user = userService.findByMail(username);
-        System.out.println("in loaduser customserice" + user);
+        var user = userService.getUserByMail(username);
         return UserPrincipal.builder()
                 .userId(user.getId())
                 .email(user.getEmail())

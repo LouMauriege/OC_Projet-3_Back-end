@@ -38,14 +38,14 @@ public class RentalController {
 	}
 
 	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<RentalDTO> createRental (
+	public ResponseEntity<String> createRental (
 			@AuthenticationPrincipal UserPrincipal principal,
 			@ModelAttribute FormCreateRentalDTO receivedRental) throws IOException {
-		return ResponseEntity.ok(rentalService.createRental(principal.getUserId(), receivedRental));
+		return ResponseEntity.ok("\"message\": \"Rental created !\"");
 	}
 
 	@PutMapping("/{rentalId}")
-	public ResponseEntity<RentalDTO> updateRental (
+	public ResponseEntity<String> updateRental (
 			@PathVariable Long rentalId,
 			@ModelAttribute FormUpdateRental receivedRental) {
 		RentalDTO receivedRentalDTO = new RentalDTO(
@@ -54,7 +54,7 @@ public class RentalController {
 				receivedRental.getPrice(),
 				receivedRental.getDescription());
 		RentalDTO updatedRental = rentalService.updateRental(rentalId, receivedRentalDTO);
-		return ResponseEntity.ok(updatedRental);
+		return ResponseEntity.ok("\"message\": \"Rental updated !\"");
 	}
 
 }

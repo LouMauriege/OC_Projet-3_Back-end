@@ -1,5 +1,6 @@
 package com.chatop.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -13,7 +14,11 @@ public class MessageDTO {
     @JsonProperty("user_id")
     private Long userId;
     private String message;
+
+    @JsonFormat(pattern = "YYYY/MM/dd")
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "YYYY/MM/dd")
     private LocalDateTime updatedAt;
 
     public MessageDTO(

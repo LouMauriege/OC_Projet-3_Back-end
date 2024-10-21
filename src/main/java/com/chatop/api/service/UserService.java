@@ -34,13 +34,14 @@ public class UserService {
 				() -> new UserNotFound("Utilisateur non trouvé !")));
 	}
 
-	public UserDTO findByMail(String email) {
+	public UserDTO getUserByMail(String email) {
 		return userMapper.toDTO(userRepository.findByEmail(email).orElseThrow(
 				() -> new UserNotFound("Utilisateur non trouvé !")));
 	}
 
 	public boolean isEmailAvailable(String email) {
-        return findByMail(email) == null;
+		Optional<User> userFind = userRepository.findByEmail(email);
+        return userFind.isEmpty();
 	}
 
 	public UserDTO createUser(UserRegister userRegister) {

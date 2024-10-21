@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class LoginResponse {
-    private final String JWT;
+    private final String token;
 }

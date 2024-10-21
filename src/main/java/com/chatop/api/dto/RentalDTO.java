@@ -1,5 +1,6 @@
 package com.chatop.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.nio.file.Path;
@@ -14,7 +15,11 @@ public class RentalDTO {
     private String picture;
     private String description;
     private Long ownerId;
+
+    @JsonFormat(pattern = "YYYY/MM/dd")
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "YYYY/MM/dd")
     private LocalDateTime updatedAt;
 
     public RentalDTO(

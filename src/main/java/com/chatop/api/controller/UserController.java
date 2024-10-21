@@ -38,19 +38,18 @@ public class UserController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody UserLogin userLogin) {
         var authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userLogin.getLogin(), userLogin.getPassword())
+                new UsernamePasswordAuthenticationToken(userLogin.getEmail(), userLogin.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         var principal = (UserPrincipal) authentication.getPrincipal();
         var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), principal.getName(), principal.getCreatedAt(), principal.getUpdatedAt());
         return LoginResponse.builder()
-                .JWT(token)
+                .token(token)
                 .build();
     }
 
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> register(@RequestBody UserRegister userRegister) {
-        System.out.println(userRegister);
         if (userService.isEmailAvailable(userRegister.getEmail())) {
             UserDTO userCreated = userService.createUser(userRegister);
             var authentication = authenticationManager.authenticate(
@@ -62,7 +61,7 @@ public class UserController {
 
             var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), principal.getName(), principal.getCreatedAt(), principal.getUpdatedAt());
             LoginResponse jwt = LoginResponse.builder()
-                    .JWT(token)
+                    .token(token)
                     .build();
             return ResponseEntity.ok(jwt);
         }
