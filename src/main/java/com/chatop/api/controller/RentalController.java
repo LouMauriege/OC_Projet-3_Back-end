@@ -3,6 +3,7 @@ package com.chatop.api.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.chatop.api.dto.ArrayRentalsDTO;
 import com.chatop.api.dto.FormCreateRentalDTO;
 import com.chatop.api.dto.RentalDTO;
 import com.chatop.api.mapper.RentalMapper;
@@ -27,9 +28,10 @@ public class RentalController {
 	private RentalMapper rentalMapper;
 
 	@GetMapping()
-	public ResponseEntity<List<RentalDTO>> getRentals() {
-		List<RentalDTO> rentals = rentalService.getRentals();
-		return ResponseEntity.ok(rentals);
+	public ResponseEntity<ArrayRentalsDTO> getRentals() {
+		ArrayRentalsDTO arrayRentalsDTO = new ArrayRentalsDTO(rentalService.getRentals());
+		RentalDTO[] rentals = rentalService.getRentals();
+		return ResponseEntity.ok(arrayRentalsDTO);
     }
 
 	@GetMapping("/{id}")
@@ -41,6 +43,7 @@ public class RentalController {
 	public ResponseEntity<String> createRental (
 			@AuthenticationPrincipal UserPrincipal principal,
 			@ModelAttribute FormCreateRentalDTO receivedRental) throws IOException {
+		rentalService.createRental(principal.getUserId(), receivedRental);
 		return ResponseEntity.ok("\"message\": \"Rental created !\"");
 	}
 

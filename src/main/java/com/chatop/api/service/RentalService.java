@@ -43,9 +43,9 @@ public class RentalService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<RentalDTO> getRentals() {
+	public RentalDTO[] getRentals() {
 		List<Rental> rentals = rentalRepository.findAll();
-		return rentals.stream().map(rentalMapper::toDTO).collect(Collectors.toList());
+		return rentals.stream().map(rentalMapper::toDTO).toArray(RentalDTO[]::new);
 	}
 	
 	public RentalDTO getRentalById(Long id) {
@@ -53,7 +53,7 @@ public class RentalService {
 				() -> new RentalNotFound("Rental non trouvé !")));
 	}
 
-	public RentalDTO createRental(Long ownerId, FormCreateRentalDTO formCreateRentalDTO) {
+	public void createRental(Long ownerId, FormCreateRentalDTO formCreateRentalDTO) {
 		User userFind = userRepository.findById(ownerId).orElseThrow(
 				() -> new UserNotFound("Utilisateur non trouvé !"));
 		Rental rental = new Rental();
@@ -64,7 +64,8 @@ public class RentalService {
 		rental.setOwnerId(userFind);
 		Rental savedRental = rentalRepository.save(rental);
 		rental.setPicture(uploadFile(savedRental.getId(), formCreateRentalDTO.getPicture()));
-		return rentalMapper.toDTO(savedRental);
+		Rental savedRentalWithPicture = rentalRepository.save(rental);
+		System.out.println(savedRentalWithPicture);
 	}
 
 	public RentalDTO updateRental(Long rentalId, RentalDTO rentalDTO) {
