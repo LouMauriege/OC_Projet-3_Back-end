@@ -15,18 +15,10 @@ public class MessageController {
 	@Autowired
 	private MessageService messageService;
 	
-	@GetMapping("/messages")
-	public ResponseEntity<List<MessageDTO>> getMessages() {
-		List<MessageDTO> messages = messageService.getMessages();
-		return ResponseEntity.ok(messages);
-	}
-
 	@PostMapping("/messages")
-	public ResponseEntity<MessageDTO> createMessage (@RequestBody MessageDTO messageDTO) {
-		System.out.println(messageDTO);
+	public ResponseEntity<String> createMessage (@RequestBody MessageDTO messageDTO) {
 		MessageDTO createdMessage = messageService.createMessage(messageDTO);
-		return ResponseEntity.ok(createdMessage);
-//		return "Message send with success";
+		return ResponseEntity.ok("\"message\": \"Message send with success\"");
 	}
 
 }

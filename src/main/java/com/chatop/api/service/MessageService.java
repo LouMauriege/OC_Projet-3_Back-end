@@ -30,8 +30,8 @@ public class MessageService {
 
 	public MessageDTO createMessage(MessageDTO messageDTO) {
 		Message message = messageMapper.toEntity(messageDTO);
-		System.out.println(message);
 		Message messageSaved = messageRepository.save(message);
+		System.out.println(messageSaved);
         return messageMapper.toDTO(messageSaved);
 	}
 }
