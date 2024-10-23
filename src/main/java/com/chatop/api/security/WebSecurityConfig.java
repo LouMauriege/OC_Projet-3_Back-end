@@ -36,7 +36,7 @@ public class WebSecurityConfig {
             )
             .securityMatcher("/**")
             .authorizeHttpRequests(registry -> registry
-                    .requestMatchers("/rentals-pictures/**", "/auth/login", "/auth/register").permitAll()
+                    .requestMatchers("/swagger.html", "/rentals-pictures/**", "/auth/login", "/auth/register").permitAll()
                     .anyRequest().authenticated()
             );
 
