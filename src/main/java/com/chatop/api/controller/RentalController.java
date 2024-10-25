@@ -1,5 +1,6 @@
 package com.chatop.api.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -59,5 +60,4 @@ public class RentalController {
 		RentalDTO updatedRental = rentalService.updateRental(rentalId, receivedRentalDTO);
 		return ResponseEntity.ok("\"message\": \"Rental updated !\"");
 	}
-
 }

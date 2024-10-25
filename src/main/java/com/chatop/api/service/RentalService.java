@@ -1,22 +1,21 @@
 package com.chatop.api.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.chatop.api.dto.FormCreateRentalDTO;
 import com.chatop.api.dto.RentalDTO;
-import com.chatop.api.exception.FileFailedUpload;
 import com.chatop.api.exception.RentalNotFound;
 import com.chatop.api.exception.UserNotFound;
 import com.chatop.api.mapper.RentalMapper;
 import com.chatop.api.model.User;
 import com.chatop.api.repository.UserRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.chatop.api.model.Rental;
@@ -26,6 +25,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
+@Log4j2
 @Service
 public class RentalService {
 	@Value("${upload.rentals.path}")
@@ -63,7 +63,13 @@ public class RentalService {
 		rental.setDescription(formCreateRentalDTO.getDescription());
 		rental.setOwnerId(userFind);
 		Rental savedRental = rentalRepository.save(rental);
-		rental.setPicture(uploadFile(savedRental.getId(), formCreateRentalDTO.getPicture()));
+		System.out.println(savedRental.getId());
+		System.out.println(formCreateRentalDTO.getPicture());
+		try {
+			rental.setPicture(uploadFile(savedRental.getId(), formCreateRentalDTO.getPicture()));
+		} catch (IOException e) {
+			throw new RuntimeException("Echec de l'upload du fichier !");
+		}
 		Rental savedRentalWithPicture = rentalRepository.save(rental);
 		System.out.println(savedRentalWithPicture);
 	}
@@ -80,21 +86,20 @@ public class RentalService {
 		return rentalMapper.toDTO(updatedRental);
 	}
 
-	public String uploadFile(Long rentalId, MultipartFile picture) {
+	public String uploadFile(Long rentalId, MultipartFile picture) throws IOException {
 		String originalFilename = picture.getOriginalFilename();
-		System.out.println(originalFilename);
 		if (originalFilename != null && originalFilename.contains(".")) {
 			String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
 			String fileName = rentalId + "." + fileExtension;
-			Path filePath = Paths.get(uploadFolder + "/" + fileName);
-			try {
-				Files.copy(picture.getInputStream(), filePath);
-				String url = urlToUploadFolder + fileName;
-				return url;
-			} catch(IOException e) {
-				throw new FileFailedUpload("Echec de l'upload du fichier !");
+			String filePath = uploadFolder + fileName;
+            File createdFile = new File(filePath);
+			try (FileOutputStream fos = new FileOutputStream(createdFile)) {
+				fos.write(picture.getBytes());
 			}
-		} else {
+            String url = urlToUploadFolder + fileName;
+			System.out.println(url);
+            return url;
+        } else {
 			throw new RentalNotFound("Echec de l'upload du fichier !");
 		}
     }
