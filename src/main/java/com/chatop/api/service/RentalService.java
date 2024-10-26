@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class RentalService {
 	@Value("${upload.rentals.path}")
-	private String uploadFolder;
+	private Path uploadFolder;
 
 	@Value("${upload.rentals.url}")
 	private String urlToUploadFolder;
@@ -87,12 +87,21 @@ public class RentalService {
 			String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
 			String fileName = rentalId + "." + fileExtension;
 			Path filePath = Paths.get(uploadFolder + "/" + fileName);
+//			try {
+//				Files.copy(picture.getInputStream(), filePath);
+//				String url = urlToUploadFolder + fileName;
+//				return url;
+//			} catch(IOException e) {
+//				throw new FileFailedUpload("Echec de l'upload du fichier !");
+//			}
 			try {
-				Files.copy(picture.getInputStream(), filePath);
-				String url = urlToUploadFolder + fileName;
-				return url;
-			} catch(IOException e) {
-				throw new FileFailedUpload("Echec de l'upload du fichier !");
+//				Path filePath = Paths.get(uploadFolder, picture.getOriginalFilename());
+				Files.createDirectories(filePath.getParent()); // Ensure the directory exists
+				Files.write(filePath, picture.getBytes());
+				String fileUrl = urlToUploadFolder + fileName;
+				return fileUrl;
+			} catch (IOException e) {
+				throw new RuntimeException("l'erreur est : " + e);
 			}
 		} else {
 			throw new RentalNotFound("Echec de l'upload du fichier !");
