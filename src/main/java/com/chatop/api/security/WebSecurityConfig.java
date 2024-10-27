@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,17 +29,22 @@ public class WebSecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
-            .cors(cors -> cors.disable())
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(
-                session -> session
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .securityMatcher("/**")
-            .authorizeHttpRequests(registry -> registry
-                    .requestMatchers("/rentals-pictures/**", "/auth/login", "/auth/register").permitAll()
-                    .anyRequest().authenticated()
-            );
+                )
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(
+                                "/actuator/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**", // Add this path for OpenAPI docs access
+                                "/rentals-pictures/**",
+                                "/auth/login",
+                                "/auth/register"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
     }
@@ -55,5 +61,4 @@ public class WebSecurityConfig {
                 .passwordEncoder(passwordEncoder())
                 .and().build();
     }
-
 }
