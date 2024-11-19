@@ -1,7 +1,6 @@
 package com.chatop.api.mapper;
 
 import com.chatop.api.dto.RentalDTO;
-import com.chatop.api.dto.UserDTO;
 import com.chatop.api.exception.UserNotFound;
 import com.chatop.api.model.Rental;
 import com.chatop.api.model.User;
@@ -9,8 +8,6 @@ import com.chatop.api.repository.UserRepository;
 import com.chatop.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class RentalMapper {

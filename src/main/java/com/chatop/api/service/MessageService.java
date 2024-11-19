@@ -11,7 +11,6 @@ import com.chatop.api.repository.MessageRepository;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -31,7 +30,6 @@ public class MessageService {
 	public MessageDTO createMessage(MessageDTO messageDTO) {
 		Message message = messageMapper.toEntity(messageDTO);
 		Message messageSaved = messageRepository.save(message);
-		System.out.println(messageSaved);
         return messageMapper.toDTO(messageSaved);
 	}
 }

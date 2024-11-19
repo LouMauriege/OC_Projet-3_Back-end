@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.chatop.api.service.MessageService;
 
-import java.util.List;
-
 @RestController
 public class MessageController {
 	

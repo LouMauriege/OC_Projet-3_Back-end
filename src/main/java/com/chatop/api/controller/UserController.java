@@ -57,7 +57,6 @@ public class UserController {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
             var principal = (UserPrincipal) authentication.getPrincipal();
-            System.out.println(principal);
 
             var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), principal.getName(), principal.getCreatedAt(), principal.getUpdatedAt());
             LoginResponse jwt = LoginResponse.builder()
@@ -65,7 +64,6 @@ public class UserController {
                     .build();
             return ResponseEntity.ok(jwt);
         }
-        System.out.println("deja pris");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

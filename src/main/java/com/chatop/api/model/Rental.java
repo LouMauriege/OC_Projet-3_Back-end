@@ -1,9 +1,7 @@
 package com.chatop.api.model;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
-
 import lombok.Data;
 
 @Data

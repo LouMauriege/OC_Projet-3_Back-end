@@ -1,7 +1,6 @@
 package com.chatop.api.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.chatop.api.dto.ArrayRentalsDTO;
 import com.chatop.api.dto.FormCreateRentalDTO;

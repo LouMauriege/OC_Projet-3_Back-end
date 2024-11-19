@@ -1,10 +1,6 @@
 package com.chatop.api.security;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-
-import javax.security.auth.Subject;
-import java.util.Collection;
 
 public class UserPrincipalAuthenticationToken extends AbstractAuthenticationToken {
     private final UserPrincipal principal;

@@ -1,6 +1,5 @@
 package com.chatop.api.security;
 
-import com.chatop.api.exception.TokenNotFound;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,21 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-//    private String extractTokenFromRequest(HttpServletRequest request) {
-//        var token = request.getHeader("Authorization");
-//        if (StringUtils.hasText(token) && token.startsWith(("Bearer "))) {
-//            return token.substring(7);
-//        } else {
-//            throw new TokenNotFound("Token non trouvé !");
-//        }
-//    }
-
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
         var token = request.getHeader("Authorization");
         if (StringUtils.hasText(token) && token.startsWith(("Bearer "))) {
            return Optional.of(token.substring(7));
         }
-//        return throw new TokenNotFound("Token non trouvé");
         return Optional.empty();
     }
 }

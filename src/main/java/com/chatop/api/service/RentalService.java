@@ -5,11 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.chatop.api.dto.FormCreateRentalDTO;
 import com.chatop.api.dto.RentalDTO;
-import com.chatop.api.exception.FileFailedUpload;
 import com.chatop.api.exception.RentalNotFound;
 import com.chatop.api.exception.UserNotFound;
 import com.chatop.api.mapper.RentalMapper;
@@ -65,7 +63,6 @@ public class RentalService {
 		Rental savedRental = rentalRepository.save(rental);
 		rental.setPicture(uploadFile(savedRental.getId(), formCreateRentalDTO.getPicture()));
 		Rental savedRentalWithPicture = rentalRepository.save(rental);
-		System.out.println(savedRentalWithPicture);
 	}
 
 	public RentalDTO updateRental(Long rentalId, RentalDTO rentalDTO) {
@@ -82,20 +79,11 @@ public class RentalService {
 
 	public String uploadFile(Long rentalId, MultipartFile picture) {
 		String originalFilename = picture.getOriginalFilename();
-		System.out.println(originalFilename);
 		if (originalFilename != null && originalFilename.contains(".")) {
 			String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
 			String fileName = rentalId + "." + fileExtension;
 			Path filePath = Paths.get(uploadFolder + "/" + fileName);
-//			try {
-//				Files.copy(picture.getInputStream(), filePath);
-//				String url = urlToUploadFolder + fileName;
-//				return url;
-//			} catch(IOException e) {
-//				throw new FileFailedUpload("Echec de l'upload du fichier !");
-//			}
 			try {
-//				Path filePath = Paths.get(uploadFolder, picture.getOriginalFilename());
 				Files.createDirectories(filePath.getParent()); // Ensure the directory exists
 				Files.write(filePath, picture.getBytes());
 				String fileUrl = urlToUploadFolder + fileName;
