@@ -33,7 +33,7 @@ USE chatop;
 And finally run the sql script you'll find in the root folder called "*script.sql*"
 
 ```sql
-source /path/to/file/script.sql
+source /path/to/file/script.sql;
 ```
 
 Set-up the application.properties file in the root folder to match your MySQL credentials :
