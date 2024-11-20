@@ -71,7 +71,6 @@ public class RentalService {
         existingRental.setName(rentalDTO.getName());
 		existingRental.setSurface(rentalDTO.getSurface());
 		existingRental.setPrice(rentalDTO.getPrice());
-		existingRental.setPicture(rentalDTO.getPicture());
 		existingRental.setDescription(rentalDTO.getDescription());
 		Rental updatedRental = rentalRepository.save(existingRental);
 		return rentalMapper.toDTO(updatedRental);

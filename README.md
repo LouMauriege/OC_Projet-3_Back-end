@@ -6,7 +6,7 @@ Visit the [MySQL download page](https://dev.mysql.com/downloads/) and install th
 
 Run your MySQL server with this command :
 
-*Replace your_username with your actual MySQL server username.*
+*Replace your_username with your actual MySQL server username. (Default is root)*
 
 ```bash
 mysql -u your_username -p
@@ -14,7 +14,7 @@ mysql -u your_username -p
 
 Then enter your MySQL password.
 
-Make sur you're running on port 3306 with :
+Make sure you're running on port 3306 with :
 
 ```sql
 SHOW VARIABLES LIKE 'port';
