@@ -46,6 +46,8 @@ spring.datasource.username=your_username
 
 Create an env var called `OC_P3_DATASOURCE_PASSWD` with your MySQL password as value.
 
+Create another env var called `OC_P3_SECRET_KEY` with a 256 bit key as value.
+
 Run this command to start the api in the root folder of this repository :
 
 ```bash
